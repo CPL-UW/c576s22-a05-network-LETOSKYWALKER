@@ -125,6 +125,7 @@ public class GMScript : NetworkBehaviour
     {
         Dirty = true;
         reader.ReadValueSafe(out var message);
+        
         _enemyChunk = SwitchBounds(s2v(message),_hBounds,_eBounds);
     }
     
@@ -176,8 +177,12 @@ public class GMScript : NetworkBehaviour
         if (0 != _fixedUpdateCount++ % _fixedUpdateFramesToWait) return;
         
         PlayerMove(0,-1); // tick down
-        _myChunk = UpdateKillBoard(_hBounds, _myChunk);
-        
+        int a = 0;
+        _myChunk = UpdateKillBoard(_hBounds, _myChunk, a);
+        if(a == 1)
+        {
+            _enemyPiece = _myPiece;
+        }
         // infoText.text = $"PTS:{_score}\t\tMAX:{_difficulty}\nCURRIC 576";
         _fixedUpdateCount = 1;
     }
