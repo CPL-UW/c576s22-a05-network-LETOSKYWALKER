@@ -13,6 +13,8 @@ using Random = UnityEngine.Random;
 public static class Netris
 {
     public const int BOUNDS_MAX = 25;
+    //private RectInt _hBounds = new(BOUNDS_MAX, BOUNDS_MAX, -BOUNDS_MAX, -BOUNDS_MAX);
+    //private RectInt _eBounds = new(BOUNDS_MAX, BOUNDS_MAX , -BOUNDS_MAX, -BOUNDS_MAX);
     private const int NO_ROW = -10 * BOUNDS_MAX;
 
     private static readonly Vector3Int[] PIECE_T = {new(0, -1), new(1, -1), new(0, 0), new(-1, -1)};
@@ -154,9 +156,12 @@ public static class Netris
     }
 
 
-    public static Vector3Int[] UpdateKillBoard(RectInt bounds, Vector3Int[] chunk)
+    public static Vector3Int[] UpdateKillBoard(RectInt bounds, Vector3Int[] chunk, int val)
     {
         var row_to_kill = FindKillableRow(chunk, bounds);
+        if(NO_ROW != row_to_kill) { 
+            val = 1;
+        }
         return NO_ROW != row_to_kill ? KillRowNumber(chunk, row_to_kill) : chunk;
     }
     
@@ -187,7 +192,10 @@ public static class Netris
             var maxCount = 1 + bounds.xMax - bounds.xMin; // width
             foreach (var p in chunk)
                 if (p.y == row) maxCount--;
-            if (0 == maxCount) return row;
+            if (0 == maxCount) {
+                
+                return row;
+                }
         }
         return NO_ROW;
     }
